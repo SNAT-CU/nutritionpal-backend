@@ -1,7 +1,7 @@
 {
   "name": "nutritionpal-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "author": "tanmayVaish <tanmay777leon@gmail.com>",
   "license": "MIT",
   "scripts": {
