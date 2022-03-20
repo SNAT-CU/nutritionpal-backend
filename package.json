@@ -1,0 +1,28 @@
+{
+  "name": "nutritionpal-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "tanmayVaish <tanmay777leon@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "build": "yarn run build:prod",
+    "build:prod": "yarn run build:clean && yarn run build:copy",
+    "build:clean": "rm -rf build",
+    "build:copy": "cp -r public build",
+    "build:dev": "yarn run build:clean && yarn run build:copy && yarn run start:dev",
+    "start:dev": "nodemon server.js",
+    "start:prod": "node server.js",
+    "lint": "eslint .",
+    "pretty": "prettier --write '**/*.js'"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "nodemon": "^2.0.15",
+    "prettier": "2.6.0"
+  }
+}
