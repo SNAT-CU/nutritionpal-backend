@@ -1,5 +1,5 @@
-const emailValidate = require("../../utils/emailValidate");
-const passwordValidate = require("../../utils/passwordValidate");
+const emailValidate = require("../utils/emailValidate");
+const passwordValidate = require("../utils/passwordValidate");
 
 const checkRegisterInials = (req, res, next) => {
 	const { name, email, password, confirmPassword } = req.body;

@@ -18,7 +18,7 @@ const checkSigned = async (req, res, next) => {
 			req.user = {
 				userId: decoded.userId,
 				email: decoded.email,
-				name: decoded.name
+				name: decoded.name,
 			};
 			return next();
 		});

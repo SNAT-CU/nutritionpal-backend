@@ -1,6 +1,7 @@
 const PrismaClient = require("@prisma/client").PrismaClient;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const prisma = new PrismaClient();
 
@@ -24,25 +25,28 @@ const register = async (req, res) => {
 	const userId = crypto.randomBytes(8).toString("hex");
 	const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-	const accessToken = jwt.sign({
-		userId: userId,
-		email: req.body.email,
-		name: req.body.name,
-	}, process.env.ACCESS_TOKEN_SECRET);
-
 	try {
+		const accessToken = jwt.sign({
+			userId: userId,
+			email: req.body.email,
+			name: req.body.name,
+		}, process.env.ACCESS_TOKEN_SECRET);
+
 		await prisma.user.create({
 			data: {
-				userId: userId,
+				userId,
+				name: req.body.name,
 				email: req.body.email,
 				password: hashedPassword,
 			},
 		});
+
 		res.json({
 			accessToken: accessToken,
 			message: "User created",
 		});
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({
 			message: err.message,
 		});
@@ -58,7 +62,7 @@ const login = async (req, res) => {
 	}, process.env.ACCESS_TOKEN_SECRET);
 
 	try {
-		const user = await prisma.user.findOne({
+		const user = await prisma.user.findFirst({
 			where: {
 				email: req.body.email,
 			},
@@ -66,7 +70,10 @@ const login = async (req, res) => {
 		if (!user) {
 			throw new Error("User not found");
 		}
-		if (user.password !== req.body.password) {
+
+		const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+
+		if (!isPasswordValid) {
 			throw new Error("Password incorrect");
 		}
 		res.json({
