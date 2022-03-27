@@ -10,16 +10,15 @@ const checkSigned = async (req, res, next) => {
 
 		jwt.verify(jwtToken, ACCESS_TOKEN_SECRET, function (err, decoded) {
 			if (err) {
-				return res.status(401).send({
+				return res.status(403).send({
 					success: false,
 					message: "token not valid",
 				});
 			}
 			req.user = {
-				userId: decoded.userId || 1,
-				roles: decoded.roles || ["USER"],
-				email: decoded.email || "email@mail.com",
-				name: decoded.name || "User Name",
+				userId: decoded.userId,
+				email: decoded.email,
+				name: decoded.name
 			};
 			return next();
 		});
