@@ -1,16 +1,19 @@
 const express = require("express");
+
 const checkSigned = require("../../middlewares/checkSigned");
+const checkRegisterInitial = require("../../middlewares/checkRegisterInitial");
+
+const login = require("./login");
+const register = require("./register");
+const verify = require("./verify");
 
 const router = express.Router();
 
 // create new user => anyone
-// TODO: Register Initial Check || register router
-router.post("/register");
+router.post("/register", checkRegisterInitial, register);
 // login a user => anyone
-// TODO: login router
-router.post("/login",);
+router.post("/login", login);
 // check if signed in on reload => user
-// TODO: Verify if user is logged in
-router.all("/verify", checkSigned);
+router.all("/verify", checkSigned, verify);
 
 module.exports = router;
